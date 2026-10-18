@@ -62,3 +62,13 @@ Neste modo, a taxa informada é aplicada a cada período de capitalização esco
 4. Informe o **Período** em meses ou anos e toque em **Calcular**.
 
 O valor inicial rende desde o começo. Cada aporte é considerado no fim do mês correspondente. O resultado mostra o total aplicado (valor inicial mais aportes), os juros estimados e o valor futuro.
+
+## Desenvolvimento
+
+### Tecnologias e dependências
+
+- Flutter com Dart SDK `^3.9.2`, interface Material e suporte às plataformas configuradas no projeto.
+- `intl` para formatação de valores e `cupertino_icons` para ícones.
+- `flutter_test` para testes e `flutter_lints` para análise estática.
+
+### Configurar e executar

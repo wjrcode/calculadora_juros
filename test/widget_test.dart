@@ -32,4 +32,25 @@ void main() {
       '1.234,56',
     );
   });
+
+  testWidgets('oculta o resultado quando um valor é alterado', (tester) async {
+    await tester.pumpWidget(const FinanceApp());
+
+    await tester.tap(find.text('Juros simples'));
+    await tester.pumpAndSettle();
+
+    final fields = find.byType(TextFormField);
+    await tester.enterText(fields.at(0), '1000');
+    await tester.enterText(fields.at(1), '5');
+    await tester.enterText(fields.at(2), '1');
+    await tester.tap(find.text('Calcular'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Resultado'), findsOneWidget);
+
+    await tester.enterText(fields.at(0), '2000');
+    await tester.pumpAndSettle();
+
+    expect(find.text('Resultado'), findsNothing);
+  });
 }

@@ -2,6 +2,15 @@ import 'dart:math' as math;
 
 enum CalculationMode { simple, compound, investment }
 
+enum RateConvention {
+  effective('Efetiva'),
+  nominal('Nominal');
+
+  const RateConvention(this.label);
+
+  final String label;
+}
+
 enum RatePeriod {
   monthly('Mensal', 12),
   quarterly('Trimestral', 4),
@@ -77,14 +86,25 @@ class FinanceCalculator {
     required double ratePercent,
     required RatePeriod ratePeriod,
     required double months,
+    RateConvention rateConvention = RateConvention.effective,
   }) {
-    final monthlyRate = ratePercent / 100 * (ratePeriod.periodsPerYear / 12);
+    final periodRate = ratePercent / 100;
+    final monthlyRate = switch (rateConvention) {
+      RateConvention.effective =>
+        _pow(1 + periodRate, ratePeriod.periodsPerYear / 12) - 1,
+      RateConvention.nominal => periodRate * ratePeriod.periodsPerYear / 12,
+    };
     final growth = _pow(1 + monthlyRate, months);
+    final completeMonths = months.floor();
+    final fractionalMonth = months - completeMonths;
     final contributionFutureValue = monthlyRate == 0
-        ? monthlyContribution * months
-        : monthlyContribution * ((growth - 1) / monthlyRate);
+        ? monthlyContribution * completeMonths
+        : monthlyContribution *
+              ((_pow(1 + monthlyRate, completeMonths.toDouble()) - 1) /
+                  monthlyRate) *
+              _pow(1 + monthlyRate, fractionalMonth);
     final futureValue = initialAmount * growth + contributionFutureValue;
-    final invested = initialAmount + monthlyContribution * months;
+    final invested = initialAmount + monthlyContribution * completeMonths;
     return FinanceResult(
       investedAmount: invested,
       interestAmount: futureValue - invested,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/theme/app_logo.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../calculator/domain/finance_calculator.dart';
 import '../../calculator/presentation/calculator_view.dart';
@@ -58,17 +59,9 @@ class HomeView extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          Container(
-                            height: 48,
-                            width: 48,
-                            decoration: BoxDecoration(
-                              color: AppColors.ink,
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: const Icon(
-                              Icons.calculate_outlined,
-                              color: Colors.white,
-                            ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(16),
+                            child: const AppLogo(),
                           ),
                           const SizedBox(width: 14),
                           const Expanded(

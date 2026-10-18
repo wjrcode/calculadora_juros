@@ -65,9 +65,35 @@ void main() {
         ratePercent: 12,
         ratePeriod: RatePeriod.annual,
         months: 12,
+        rateConvention: RateConvention.nominal,
       );
 
       expect(result.futureValue, closeTo(1268.25, 0.01));
+    });
+
+    test('converte taxa efetiva anual para equivalente mensal', () {
+      final result = calculator.investment(
+        initialAmount: 0,
+        monthlyContribution: 100,
+        ratePercent: 12,
+        ratePeriod: RatePeriod.annual,
+        months: 12,
+      );
+
+      expect(result.futureValue, closeTo(1264.7, 0.1));
+    });
+
+    test('aplica aportes apenas nos meses completos', () {
+      final result = calculator.investment(
+        initialAmount: 1000,
+        monthlyContribution: 100,
+        ratePercent: 0,
+        ratePeriod: RatePeriod.monthly,
+        months: 12.5,
+      );
+
+      expect(result.investedAmount, 2200);
+      expect(result.futureValue, 2200);
     });
   });
 }

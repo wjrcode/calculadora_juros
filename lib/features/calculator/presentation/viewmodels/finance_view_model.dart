@@ -14,11 +14,20 @@ class FinanceViewModel extends ChangeNotifier {
   RatePeriod _ratePeriod = RatePeriod.monthly;
   RatePeriod get ratePeriod => _ratePeriod;
 
+  RateConvention _rateConvention = RateConvention.effective;
+  RateConvention get rateConvention => _rateConvention;
+
   DurationUnit _durationUnit = DurationUnit.years;
   DurationUnit get durationUnit => _durationUnit;
 
   void setRatePeriod(RatePeriod period) {
     _ratePeriod = period;
+    _result = null;
+    notifyListeners();
+  }
+
+  void setRateConvention(RateConvention convention) {
+    _rateConvention = convention;
     _result = null;
     notifyListeners();
   }
@@ -54,6 +63,7 @@ class FinanceViewModel extends ChangeNotifier {
         ratePercent: rate,
         ratePeriod: _ratePeriod,
         months: duration * _durationUnit.yearsPerUnit * 12,
+        rateConvention: _rateConvention,
       ),
     };
     notifyListeners();

@@ -80,6 +80,7 @@ class _CalculatorViewState extends State<CalculatorView> {
                     prefix: 'R\$',
                     color: config.color,
                     currency: true,
+                    onChanged: (_) => _viewModel.clear(),
                     validator: _validator('Informe o valor inicial'),
                   ),
                   if (isInvestment) ...[
@@ -90,6 +91,7 @@ class _CalculatorViewState extends State<CalculatorView> {
                       prefix: 'R\$',
                       color: config.color,
                       currency: true,
+                      onChanged: (_) => _viewModel.clear(),
                       validator: _validator('Informe o aporte mensal'),
                     ),
                   ],
@@ -105,8 +107,27 @@ class _CalculatorViewState extends State<CalculatorView> {
                       width: widget.mode == CalculationMode.compound ? 112 : 95,
                       onChanged: _viewModel.setRatePeriod,
                     ),
+                    onChanged: (_) => _viewModel.clear(),
                     validator: _validator('Informe a taxa de juros'),
                   ),
+                  if (isInvestment) ...[
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        const Text(
+                          'Interpretação da taxa',
+                          style: TextStyle(fontSize: 11),
+                        ),
+                        const Spacer(),
+                        _InlineSelect<RateConvention>(
+                          value: _viewModel.rateConvention,
+                          options: RateConvention.values,
+                          width: 115,
+                          onChanged: _viewModel.setRateConvention,
+                        ),
+                      ],
+                    ),
+                  ],
                   const SizedBox(height: 11),
                   _LabeledNumberField(
                     controller: _periodController,
@@ -118,6 +139,7 @@ class _CalculatorViewState extends State<CalculatorView> {
                       options: DurationUnit.values,
                       onChanged: _viewModel.setDurationUnit,
                     ),
+                    onChanged: (_) => _viewModel.clear(),
                     validator: _validator('Informe o período', positive: true),
                   ),
                   if (widget.mode == CalculationMode.compound) ...[
@@ -234,6 +256,7 @@ class _LabeledNumberField extends StatelessWidget {
     required this.validator,
     this.trailing,
     this.currency = false,
+    this.onChanged,
   });
 
   final TextEditingController controller;
@@ -243,6 +266,7 @@ class _LabeledNumberField extends StatelessWidget {
   final FormFieldValidator<String> validator;
   final Widget? trailing;
   final bool currency;
+  final ValueChanged<String>? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -298,6 +322,7 @@ class _LabeledNumberField extends StatelessWidget {
                         : _DecimalInputFormatter(),
                   ],
                   validator: validator,
+                  onChanged: onChanged,
                   style: const TextStyle(fontSize: 14),
                   decoration: const InputDecoration(
                     isDense: true,
@@ -344,6 +369,7 @@ class _InlineSelect<T> extends StatelessWidget {
   String _label(T option) => switch (option) {
     RatePeriod period => period.label.toLowerCase(),
     DurationUnit unit => unit.label.toLowerCase(),
+    RateConvention convention => convention.label.toLowerCase(),
     _ => option.toString(),
   };
 
