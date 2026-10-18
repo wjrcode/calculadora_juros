@@ -70,5 +70,3 @@ O valor inicial rende desde o começo. Cada aporte é considerado no fim do mês
 - Flutter com Dart SDK `^3.9.2`, interface Material e suporte às plataformas configuradas no projeto.
 - `intl` para formatação de valores e `cupertino_icons` para ícones.
 - `flutter_test` para testes e `flutter_lints` para análise estática.
-
-### Configurar e executar
