@@ -105,7 +105,8 @@ class _CalculatorViewState extends State<CalculatorView> {
                       value: _viewModel.ratePeriod,
                       options: ratePeriods,
                       width: widget.mode == CalculationMode.compound ? 112 : 95,
-                      onChanged: _viewModel.setRatePeriod,
+                      onChanged: (period) =>
+                          setState(() => _viewModel.setRatePeriod(period)),
                     ),
                     onChanged: (_) => _viewModel.clear(),
                     validator: _validator('Informe a taxa de juros'),
@@ -123,7 +124,9 @@ class _CalculatorViewState extends State<CalculatorView> {
                           value: _viewModel.rateConvention,
                           options: RateConvention.values,
                           width: 115,
-                          onChanged: _viewModel.setRateConvention,
+                          onChanged: (convention) => setState(
+                            () => _viewModel.setRateConvention(convention),
+                          ),
                         ),
                       ],
                     ),
@@ -137,7 +140,8 @@ class _CalculatorViewState extends State<CalculatorView> {
                     trailing: _InlineSelect<DurationUnit>(
                       value: _viewModel.durationUnit,
                       options: DurationUnit.values,
-                      onChanged: _viewModel.setDurationUnit,
+                      onChanged: (unit) =>
+                          setState(() => _viewModel.setDurationUnit(unit)),
                     ),
                     onChanged: (_) => _viewModel.clear(),
                     validator: _validator('Informe o período', positive: true),
